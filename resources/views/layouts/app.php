@@ -39,13 +39,14 @@ $navItems = [
         ['label'=>'Tickets',    'icon'=>'bi-ticket-perforated-fill', 'url'=>url('tickets'),          'route'=>'tickets',     'roles'=>['super_admin','employee','client']],
     ],
     'management' => [
-        ['label'=>'Users',      'icon'=>'bi-people-fill',            'url'=>url('admin/users'),      'route'=>'admin/users', 'roles'=>['super_admin']],
-        ['label'=>'Companies',  'icon'=>'bi-building-fill',          'url'=>url('admin/companies'),  'route'=>'admin/comp',  'roles'=>['super_admin']],
-        ['label'=>'Reports',    'icon'=>'bi-bar-chart-fill',         'url'=>url('admin/reports'),    'route'=>'admin/rep',   'roles'=>['super_admin','employee']],
+        ['label'=>'Users',      'icon'=>'bi-people-fill',            'url'=>url('admin/users'),      'route'=>'admin/users', 'roles'=>['super_admin'], 'permission'=>'users.view'],
+        ['label'=>'Companies',  'icon'=>'bi-building-fill',          'url'=>url('admin/companies'),  'route'=>'admin/comp',  'roles'=>['super_admin'], 'permission'=>'companies.view'],
+        ['label'=>'Reports',    'icon'=>'bi-bar-chart-fill',         'url'=>url('admin/reports'),    'route'=>'admin/rep',   'roles'=>['super_admin','employee'], 'permission'=>'reports.view'],
     ],
     'system' => [
-        ['label'=>'Settings',   'icon'=>'bi-gear-fill',              'url'=>url('admin/settings'),   'route'=>'admin/set',   'roles'=>['super_admin']],
-        ['label'=>'Logs',       'icon'=>'bi-journal-code',           'url'=>url('admin/logs'),       'route'=>'admin/logs',  'roles'=>['super_admin']],
+        ['label'=>'Role Permissions', 'icon'=>'bi-shield-lock-fill',   'url'=>url('admin/permissions'), 'route'=>'admin/permissions', 'roles'=>['super_admin'], 'permission'=>'permissions.manage'],
+        ['label'=>'Settings',         'icon'=>'bi-gear-fill',          'url'=>url('admin/settings'),   'route'=>'admin/set',         'roles'=>['super_admin'], 'permission'=>'settings.manage'],
+        ['label'=>'Logs',             'icon'=>'bi-journal-code',       'url'=>url('admin/logs'),       'route'=>'admin/logs',        'roles'=>['super_admin'], 'permission'=>'logs.view'],
     ],
 ];
 
@@ -60,6 +61,9 @@ function navIsActive(string $url): bool {
 }
 
 function canSee(array $item, string $role): bool {
+    if (!empty($item['permission'])) {
+        return has_permission($item['permission']);
+    }
     return in_array($role, $item['roles']);
 }
 ?>

@@ -265,6 +265,14 @@ if (!function_exists('initials_avatar')) {
     }
 }
 
+if (!function_exists('has_permission')) {
+    function has_permission(string $permissionKey): bool {
+        $user = auth_user();
+        if (!$user) return false;
+        return \App\Models\Permission::roleHas($user['role'] ?? 'client', $permissionKey);
+    }
+}
+
 if (!function_exists('setting')) {
     function setting(string $key, mixed $default = null): mixed {
         return \App\Models\Setting::get($key, $default);

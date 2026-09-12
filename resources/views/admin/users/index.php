@@ -12,9 +12,11 @@ ob_start();
         <h1 class="page-title">User Management</h1>
         <p class="page-subtitle">Manage all portal users, roles and access.</p>
     </div>
+    <?php if (has_permission('users.create')): ?>
     <a href="<?= url('admin/users/create') ?>" class="btn btn-primary">
         <i class="bi bi-person-plus-fill me-1"></i> Add User
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Role Count Cards -->

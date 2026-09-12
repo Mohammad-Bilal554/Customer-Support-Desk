@@ -16,9 +16,11 @@ ob_start();
             <?= number_format($tickets['total']) ?> ticket<?= $tickets['total'] != 1 ? 's' : '' ?> found
         </p>
     </div>
+    <?php if (has_permission('tickets.create')): ?>
     <a href="<?= url('tickets/create') ?>" class="btn btn-primary">
         <i class="bi bi-plus-lg me-1"></i>New Ticket
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Filters -->

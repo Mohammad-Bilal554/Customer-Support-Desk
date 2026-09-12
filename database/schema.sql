@@ -120,6 +120,19 @@ CREATE TABLE settings (
     UNIQUE KEY uk_key (key_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE permissions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, module VARCHAR(50) NOT NULL,
+    key_name VARCHAR(80) NOT NULL, name VARCHAR(150) NOT NULL, description TEXT DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_key_name (key_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE role_permissions (
+    role ENUM('super_admin','employee','client') NOT NULL, permission_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (role, permission_id),
+    FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS=1;
 
 -- Default super admin (password: Admin@12345)
@@ -141,3 +154,4 @@ INSERT INTO settings (key_name,value,group_name) VALUES
 ('tickets_per_page','20','tickets'),('auto_close_days','7','tickets'),
 ('email_notifications','1','mail'),('notify_new_ticket','1','mail'),
 ('notify_ticket_assigned','1','mail'),('notify_ticket_resolved','1','mail');
+

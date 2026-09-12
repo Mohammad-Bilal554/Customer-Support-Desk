@@ -50,10 +50,12 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth', 'role:super_admin,
     $r->get('reports/export/pdf',   [\App\Controllers\Admin\ReportController::class, 'exportPdf'])   ->name('admin.reports.pdf');
     $r->get('reports/export/excel', [\App\Controllers\Admin\ReportController::class, 'exportExcel']) ->name('admin.reports.excel');
 
-    // Settings & Logs
-    $r->get('settings', [\App\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
-    $r->post('settings',[\App\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
-    $r->get('logs',     [\App\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.logs');
+    // Settings & Logs & Permissions
+    $r->get('permissions',  [\App\Controllers\Admin\PermissionController::class, 'index'])->name('admin.permissions');
+    $r->post('permissions', [\App\Controllers\Admin\PermissionController::class, 'update'])->name('admin.permissions.update');
+    $r->get('settings',     [\App\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
+    $r->post('settings',    [\App\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
+    $r->get('logs',         [\App\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.logs');
 
 });
 
