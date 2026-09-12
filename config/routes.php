@@ -21,8 +21,8 @@ $router->get('dashboard', [\App\Controllers\Admin\DashboardController::class, 'i
 $router->get('profile',   [\App\Controllers\ProfileController::class, 'show'])->name('profile')->middleware(['auth']);
 $router->post('profile',  [\App\Controllers\ProfileController::class, 'update'])->name('profile.update')->middleware(['auth']);
 
-// ── Admin (authenticated + admin/employee role) ────────────────────────────
-$router->group(['prefix' => 'admin', 'middleware' => ['auth', 'role:super_admin,employee']], function (Router $r) {
+// ── Admin (authenticated + permission gated) ────────────────────────────
+$router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router $r) {
 
     // Dashboard alias
     $r->get('dashboard', [\App\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
@@ -51,9 +51,10 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth', 'role:super_admin,
     $r->get('reports/export/excel', [\App\Controllers\Admin\ReportController::class, 'exportExcel']) ->name('admin.reports.excel');
 
     // Settings & Logs & Permissions
-    $r->get('permissions',  [\App\Controllers\Admin\PermissionController::class, 'index'])->name('admin.permissions');
-    $r->post('permissions', [\App\Controllers\Admin\PermissionController::class, 'update'])->name('admin.permissions.update');
-    $r->get('settings',     [\App\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
+    $r->get('permissions',       [\App\Controllers\Admin\PermissionController::class, 'index'])->name('admin.permissions');
+    $r->post('permissions',      [\App\Controllers\Admin\PermissionController::class, 'update'])->name('admin.permissions.update');
+    $r->post('permissions/user', [\App\Controllers\Admin\PermissionController::class, 'updateUserPermissions'])->name('admin.permissions.user.update');
+    $r->get('settings',          [\App\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
     $r->post('settings',    [\App\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
     $r->get('logs',         [\App\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.logs');
 

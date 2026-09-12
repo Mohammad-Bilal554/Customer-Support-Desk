@@ -23,7 +23,7 @@ class CompanyController extends Controller
     public function index(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.view'));
 
         $filters = [
             'search'    => $request->query('search', ''),
@@ -47,7 +47,7 @@ class CompanyController extends Controller
     public function create(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.create'));
 
         return $this->view('admin.companies.create', [
             'title'       => 'Add Company',
@@ -63,7 +63,7 @@ class CompanyController extends Controller
     public function store(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.create'));
 
         $validator = new Validator($request->all(), [
             'name'    => 'required|min_length:2|max_length:150',
@@ -96,7 +96,7 @@ class CompanyController extends Controller
     public function edit(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.edit'));
 
         $company = Company::findWithStats((int)$id);
         if (!$company) {
@@ -123,7 +123,7 @@ class CompanyController extends Controller
     public function update(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.edit'));
 
         $validator = new Validator($request->all(), [
             'name'    => 'required|min_length:2|max_length:150',
@@ -155,7 +155,7 @@ class CompanyController extends Controller
     public function destroy(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.delete'));
 
         $result = $this->companyService->delete((int)$id);
 
@@ -176,7 +176,7 @@ class CompanyController extends Controller
     public function toggle(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('companies.edit'));
 
         $result = $this->companyService->toggleActive((int)$id);
         return $this->json($result);

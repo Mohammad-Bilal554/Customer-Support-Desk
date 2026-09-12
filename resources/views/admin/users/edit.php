@@ -23,9 +23,14 @@ ob_start();
         <h1 class="page-title">Edit User</h1>
         <p class="page-subtitle">Update account details for <?= htmlspecialchars(User::fullName($u)) ?>.</p>
     </div>
-    <a href="<?= url('admin/users') ?>" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> Back to Users
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= url('admin/permissions?tab=user&user_id=' . $u['id']) ?>" class="btn btn-outline-primary">
+            <i class="bi bi-person-gear me-1"></i> Manage Permissions
+        </a>
+        <a href="<?= url('admin/users') ?>" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Users
+        </a>
+    </div>
 </div>
 
 <!-- Validation errors -->

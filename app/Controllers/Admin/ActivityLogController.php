@@ -20,7 +20,7 @@ class ActivityLogController extends Controller
     public function index(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('logs.view'));
 
         $filters = [
             'search'      => $request->query('search',      ''),

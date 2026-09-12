@@ -21,7 +21,7 @@ class ReportController extends Controller
     public function index(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isEmployee());
+        $this->authorize($this->isEmployee() || has_permission('reports.view'));
 
         $filters = [
             'preset'     => $request->query('preset',     'last_30'),
@@ -63,7 +63,7 @@ class ReportController extends Controller
     public function exportPdf(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isEmployee());
+        $this->authorize($this->isEmployee() || has_permission('reports.export'));
 
         $filters = [
             'preset'     => $request->query('preset',     'last_30'),
@@ -105,7 +105,7 @@ class ReportController extends Controller
     public function exportExcel(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isEmployee());
+        $this->authorize($this->isEmployee() || has_permission('reports.export'));
 
         $filters = [
             'preset'     => $request->query('preset',     'last_30'),

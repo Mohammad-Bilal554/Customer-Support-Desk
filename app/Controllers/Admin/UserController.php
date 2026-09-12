@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.view'));
 
         $filters = [
             'search'     => $request->query('search', ''),
@@ -52,7 +52,7 @@ class UserController extends Controller
     public function create(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.create'));
 
         $companies = Company::all(['is_active' => 1], 'name ASC');
 
@@ -67,7 +67,7 @@ class UserController extends Controller
     public function store(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.create'));
 
         $data      = $request->all();
         $validator = new Validator($data, [
@@ -102,7 +102,7 @@ class UserController extends Controller
     public function edit(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.edit'));
 
         $user      = User::findOrFail((int)$id);
         $companies = Company::all(['is_active' => 1], 'name ASC');
@@ -123,7 +123,7 @@ class UserController extends Controller
     public function update(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.edit'));
 
         $data              = $request->all();
         $data['is_active'] = (isset($data['is_active']) && (string)$data['is_active'] === '1') ? 1 : 0;
@@ -166,7 +166,7 @@ class UserController extends Controller
     public function destroy(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.delete'));
 
         $result = $this->userService->delete((int)$id);
 
@@ -187,7 +187,7 @@ class UserController extends Controller
     public function toggleStatus(Request $request, string $id): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('users.edit'));
 
         $result = $this->userService->toggleActive((int)$id);
         return $this->json($result);

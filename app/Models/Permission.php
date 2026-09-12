@@ -124,4 +124,79 @@ class Permission extends Model
             return true;
         });
     }
+
+    /**
+     * Get permission overrides for a specific user.
+     * Returns array [permission_id => is_granted (int 0 or 1)]
+     */
+    public static function getUserPermissions(int $userId): array
+    {
+        $rows = static::db()->fetchAll(
+            "SELECT permission_id, is_granted FROM user_permissions WHERE user_id = ?",
+            [$userId]
+        );
+
+        $overrides = [];
+        foreach ($rows as $r) {
+            $overrides[(int)$r['permission_id']] = (int)$r['is_granted'];
+        }
+
+        return $overrides;
+    }
+
+    /**
+     * Check if a specific user has a permission key (considering role + user overrides).
+     */
+    public static function userHasPermission(int $userId, string $role, string $permissionKey): bool
+    {
+        // Super Admin bypass
+        if ($role === 'super_admin') {
+            return true;
+        }
+
+        // Check explicit user override first
+        $row = static::db()->fetchOne(
+            "SELECT up.is_granted 
+             FROM user_permissions up 
+             JOIN permissions p ON p.id = up.permission_id 
+             WHERE up.user_id = ? AND p.key_name = ?",
+            [$userId, $permissionKey]
+        );
+
+        if ($row !== null) {
+            return (bool)$row['is_granted'];
+        }
+
+        // Fallback to role permissions
+        return static::roleHas($role, $permissionKey);
+    }
+
+    /**
+     * Sync user permission overrides for a specific user.
+     * $overrides is associative array [permission_id => '1'|'0'|'inherit'|1|0]
+     */
+    public static function syncUserPermissions(int $userId, array $overrides): bool
+    {
+        $db = static::db();
+
+        return $db->transaction(function(Database $db) use ($userId, $overrides) {
+            // Clear existing overrides for this user
+            $db->delete('user_permissions', ['user_id' => $userId]);
+
+            // Re-insert explicit overrides ('1' / '0')
+            foreach ($overrides as $pid => $val) {
+                $pid = (int)$pid;
+                $valStr = (string)$val;
+                if ($pid > 0 && ($valStr === '1' || $valStr === '0')) {
+                    $db->insert('user_permissions', [
+                        'user_id'       => $userId,
+                        'permission_id' => $pid,
+                        'is_granted'    => (int)$valStr,
+                    ]);
+                }
+            }
+
+            return true;
+        });
+    }
 }

@@ -12,7 +12,7 @@ class SettingsController extends Controller
     public function index(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('settings.manage'));
 
         $tab = $request->query('tab', 'general');
         $allowedTabs = ['general', 'notifications', 'tickets', 'security'];
@@ -42,7 +42,7 @@ class SettingsController extends Controller
     public function update(Request $request): string
     {
         $this->requireLogin();
-        $this->authorize($this->isAdmin());
+        $this->authorize($this->isAdmin() || has_permission('settings.manage'));
 
         $tab  = $request->input('_tab', 'general');
         $data = $request->except(['_csrf_token', '_tab']);

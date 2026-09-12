@@ -269,7 +269,7 @@ if (!function_exists('has_permission')) {
     function has_permission(string $permissionKey): bool {
         $user = auth_user();
         if (!$user) return false;
-        return \App\Models\Permission::roleHas($user['role'] ?? 'client', $permissionKey);
+        return \App\Models\Permission::userHasPermission((int)$user['id'], $user['role'] ?? 'client', $permissionKey);
     }
 }
 
