@@ -1,9 +1,28 @@
 <?php
 /**
  * Reports & Analytics View
+ * @var array $summary
+ * @var array $byStatus
+ * @var array $byPriority
+ * @var array $byCategory
+ * @var array $dailyTrend
+ * @var array $employees
+ * @var array $byCompany
+ * @var array $companies
+ * @var array $filters
  */
 use App\Models\Ticket;
-$title = 'Reports & Analytics';
+
+$summary    = $summary    ?? [];
+$byStatus   = $byStatus   ?? [];
+$byPriority = $byPriority ?? [];
+$byCategory = $byCategory ?? [];
+$dailyTrend = $dailyTrend ?? [];
+$employees  = $employees  ?? [];
+$byCompany  = $byCompany  ?? [];
+$companies  = $companies  ?? [];
+$filters    = $filters    ?? [];
+$title      = 'Reports & Analytics';
 ob_start();
 ?>
 

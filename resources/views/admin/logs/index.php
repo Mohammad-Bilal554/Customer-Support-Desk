@@ -1,10 +1,22 @@
 <?php
 /**
  * Activity Logs View
+ * @var array $summary
+ * @var array $logs
+ * @var array $filters
+ * @var array $actions
+ * @var array $entityTypes
+ * @var array $users
  */
 use App\Models\User;
 
-$title = 'Activity Logs';
+$summary     = $summary     ?? [];
+$logs        = $logs        ?? ['data' => [], 'total' => 0];
+$filters     = $filters     ?? [];
+$actions     = $actions     ?? [];
+$entityTypes = $entityTypes ?? [];
+$users       = $users       ?? [];
+$title       = 'Activity Logs';
 ob_start();
 
 // Action badge colors

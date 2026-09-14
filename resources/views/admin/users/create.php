@@ -1,6 +1,7 @@
 <?php
 /**
  * Create User View
+ * @var array $companies
  */
 use App\Core\Session;
 use App\Core\Csrf;
@@ -9,6 +10,7 @@ $session   = Session::getInstance();
 $errors    = $session->getFlash('errors') ?? [];
 $old       = $session->getFlash('old')    ?? [];
 $csrfToken = Csrf::getToken();
+$companies = $companies ?? [];
 $title     = 'Create User';
 ob_start();
 ?>

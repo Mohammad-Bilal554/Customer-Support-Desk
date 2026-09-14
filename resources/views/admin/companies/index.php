@@ -1,9 +1,16 @@
 <?php
 /**
  * Companies Index View
+ * @var array $summary
+ * @var array $companies
+ * @var array $filters
  */
 use App\Models\Company;
-$title = 'Company Management';
+
+$summary   = $summary   ?? ['total' => 0, 'active' => 0, 'inactive' => 0, 'users' => 0];
+$companies = $companies ?? ['data' => [], 'total' => 0];
+$filters   = $filters   ?? [];
+$title     = 'Company Management';
 ob_start();
 ?>
 

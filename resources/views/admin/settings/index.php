@@ -1,6 +1,9 @@
 <?php
 /**
  * Portal Settings View
+ * @var string $tab
+ * @var array $settings
+ * @var array $groups
  */
 use App\Core\Session;
 use App\Core\Csrf;
@@ -8,6 +11,9 @@ use App\Models\Setting;
 
 $session   = Session::getInstance();
 $csrfToken = Csrf::getToken();
+$tab       = $tab      ?? 'general';
+$settings  = $settings ?? [];
+$groups    = $groups   ?? [];
 $title     = 'Portal Settings';
 ob_start();
 

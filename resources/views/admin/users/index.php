@@ -1,8 +1,16 @@
 <?php
 /**
  * Users Index View
+ * @var array $counts
+ * @var array $filters
+ * @var array $companies
+ * @var array $users
  */
-$title = 'User Management';
+$counts    = $counts    ?? ['super_admin' => 0, 'employee' => 0, 'client' => 0];
+$filters   = $filters   ?? [];
+$companies = $companies ?? [];
+$users     = $users     ?? ['data' => [], 'total' => 0];
+$title     = 'User Management';
 ob_start();
 ?>
 
