@@ -1,10 +1,5 @@
 # HelpDesk Pro — Enterprise Support Portal
 
-[![PHP]
-[![MySQL]
-[![Bootstrap]
-]
-
 An enterprise-grade, feature-rich **Helpdesk & Support Portal** built with PHP, MySQL, and modern JavaScript. Designed for high performance, maximum flexibility, and security, HelpDesk Pro offers seamless ticket lifecycle management, multi-tenant company support, interactive analytics, and a dynamic 2-tier (Role & User-Wise) permission engine.
 
 ---
